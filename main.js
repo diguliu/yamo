@@ -40,41 +40,25 @@ function stMsg(msg){
 	Amarok.Window.Statusbar.shortMessage(msg); 
 }
 
-
-
 function init() {
-
-    if(mainWindow || debugWindow) return;
+    if(mainWindow || debugWindow) close(false);
  
  	debugWindow = new DebugWindow();
-	
-	
 	mainWindow = new MainWindow();
- 
-   	
-  
-  
 }
 
-
-
-function exit(flagDeletarDados){
-
+function close(flagDeletarDados){
     mainWindow.getDialog().close();
-	
 	debugWindow.getDialog().close();
 	
-	if (flagDeletarDados) {
-		
-		tracksData = null;
-	}
-	
+	if (flagDeletarDados) tracksData = null;
 	mainWindow.gerenciamentoTagsWindow = null;
-	
 	mainWindow = null;
-	
 	debugWindow = null;
-	
+}
+
+function exit(flagDeletarDados){
+	close(flagDeletarDados)
 	Amarok.end();
 }
 
