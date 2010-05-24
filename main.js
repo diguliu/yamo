@@ -43,13 +43,13 @@ function stMsg(msg){
 function init() {
     if(mainWindow || debugWindow) close(false);
  
- 	debugWindow = new DebugWindow();
+// 	debugWindow = new DebugWindow();
 	mainWindow = new MainWindow();
 }
 
 function close(flagDeletarDados){
-    mainWindow.getDialog().close();
-	debugWindow.getDialog().close();
+	if(mainWindow) mainWindow.getDialog().close();
+	if(debugWindow) debugWindow.getDialog().close();
 	
 	if (flagDeletarDados) tracksData = null;
 	mainWindow.gerenciamentoTagsWindow = null;

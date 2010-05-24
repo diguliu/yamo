@@ -141,6 +141,8 @@ function MainWindow()
 			var cmbZoom = dialog.centralWidget.cmbZoom;
 			
 			var btnTags = dialog.centralWidget.btnTags;
+
+			var btnDebug = dialog.centralWidget.btnDebug;
 			
 			var gerenciamentoTagsWindow = null;
 			
@@ -383,6 +385,19 @@ function MainWindow()
 				
 			});
 			
+			//_____________________________________________________________________________
+
+
+			btnDebug.clicked.connect(function(){
+
+				if (!debugWindow)
+					debugWindow = new DebugWindow(self);
+				else{
+					debugWindow.getDialog().close();
+					debugWindow = null;
+				}
+			});
+
 			//_____________________________________________________________________________
 			
 			btnApply.clicked.connect(function(){

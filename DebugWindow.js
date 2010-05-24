@@ -29,7 +29,7 @@ function DebugWindow()
 	
 	
 	dialog.btnClose.clicked.connect(function(){
-		
+		debugWindow = null;
 		dialog.close();
 		
 	});
