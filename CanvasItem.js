@@ -68,13 +68,14 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 		this.X = x;
 		this.Y = y;
 	}
-	
-	this.setClickedMe = function(flag){
-		
-		this.clickedMe = flag;
+
+	this.inverseSelection = function(){
+		this.setSelected(!this.isSelected);
 	}
-	
-	
+
+	this.setClickedMe = function(flag){
+		this.clickedMe = flag;
+    }
 	
 	this.getW = function(){
 		
@@ -157,28 +158,20 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 	this.setSelected = function(flag){
 	    
 	    if(flag){
-		
-		this.isSelected = true;
-		selectionCircle = new QGraphicsEllipseItem(this.X-1,this.Y-1,this.W+1,this.H+1);
-		selectionCircle.setPen(pen2);
-		selectionCircle.setZValue(2);
-		scene.addItem(selectionCircle);
-	    }
-	    else{
-		this.isSelected = false;
-		if(selectionCircle){
-		    msg("entrou");
-		    scene.removeItem(selectionCircle);
-		    selectionCircle = null;
+			this.isSelected = true;
+			selectionCircle = new QGraphicsEllipseItem(this.X-1,this.Y-1,this.W+1,this.H+1);
+			selectionCircle.setPen(pen2);
+			selectionCircle.setZValue(2);
+			scene.addItem(selectionCircle);
 		}
+	    else{
+			this.isSelected = false;
+			if(selectionCircle){
+				scene.removeItem(selectionCircle);
+				selectionCircle = null;
+			}
 	    }
 	}
-	
-	
-	
-	
 }
-
-
 
 extend(CanvasItem, QGraphicsEllipseItem); 

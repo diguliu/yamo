@@ -82,7 +82,15 @@ function _yamoCanvas(view){
 			
 	
 	this.mousePressEvent = function(event){
+		/*
+		msg("Mouse button pressed!");
+
+		if(event.modifiers() & Qt.ShiftModifier)
+			msg("Shift Hold!");
+		else
+			msg("No shift!");
 		
+*/
 		if(event.modifiers() & Qt.ControlModifier ){
 			
 			view.dragMode = QGraphicsView.ScrollHandDrag;
@@ -101,7 +109,7 @@ function _yamoCanvas(view){
 	}
 	
 	this.mouseReleaseEvent = function(event){
-			
+
 		if(event.modifiers() & Qt.ControlModifier ||event.modifiers() & Qt.ShiftModifier )
 			view.dragMode = QGraphicsView.NoDrag;
 		
@@ -112,64 +120,64 @@ function _yamoCanvas(view){
 		
 		if(posA.x() != posB.x() && posA.y() != posB.y()){
 		    
-		    msg("abriu selecao...");
-		   
-		   this.getSelectedItems();
+			msg("abriu selecao...");
+
+			this.getSelectedItems(event.modifiers() & Qt.ShiftModifier);
 		
-		
-		    if(this.selectedItems.length > 0){
-			for(var i = 0; i < this.selectedItems.length; i++){
-			    msg("ID: "+this.selectedItems[i].track.getID().toString());
-			
-			}
-		    
-		    }
+			msg("After get selected items");
+		    if(this.selectedItems.length > 0)
+				for(var i = 0; i < this.selectedItems.length; i++){
+					msg("ID: "+this.selectedItems[i].track.getID().toString());
+
+				}
 		    
 		    msg(this.selectedItems.toString());
 		
 		}
-		else{
-		    if(this.selectedItems.length > 0)
-			deselectAll();
-		    
-		    if(this.selectedItems.length == 0) msg("nenhum item selecionado");
-		}
-		
-		
-		
-					
 	}
 	
-	this.getSelectedItems = function(){
+	this.getSelectedItems = function(shift_hold){
 	    
-	    
+
+	    msg("Selection Area: " + this.selectionArea().toString());
+		if(!shift_hold){
+			msg("Deselecting everybody!")
+			deselectAll();
+		}
+
 	    var items = this.items;
     
 	    for(var i = 0; i < items.length; i++){
-		
-		if(this.selectionArea().intersects(items[i].boundingRect())){
-		    
-		    items[i].setSelected(true);
-		    this.selectedItems.push(items[i]);
-		    msg("achou");
-		
-		}
-	    
+			msg("i="+i.toString());
+			if(this.selectionArea().intersects(items[i].boundingRect())){
+				items[i].inverseSelection();
+				if(items[i].isSelected){
+					msg("Include this guy in selection!");
+					this.selectedItems.push(items[i]);
+				}
+				else{
+					msg("Remove this guy from selection!");
+					for(var j=0 ; j<this.selectedItems.length ; j++){
+						msg("j="+j.toString());
+						if(this.selectedItems[j] == items[i]){
+							msg("Equal!");
+							this.selectedItems.splice(j,1);
+						}
+					}
+				}
+				msg("After selection");
+			}
 	    } 
-	    
 	
 	}
 	
 	function deselectAll(){
-	    msg("entrou em deselect all");
 	    for(var i = 0; i < self.items.length; i++){
-		msg("loop");
-		self.items[i].setSelected(false);
-	    
+			self.items[i].setSelected(false);
 	    }
 	    
 	    self.selectedItems.clear();
-	    msg("limpou array");
+	    msg("Array cleaned!");
 	}
 	
 			
