@@ -120,26 +120,22 @@ function _yamoCanvas(view){
 		
 		if(posA.x() != posB.x() && posA.y() != posB.y()){
 		    
-			msg("abriu selecao...");
+			msg("Opening selection");
 
 			this.getSelectedItems(event.modifiers() & Qt.ShiftModifier);
 		
-			msg("After get selected items");
+			msg("Selected items:");
 		    if(this.selectedItems.length > 0)
 				for(var i = 0; i < this.selectedItems.length; i++){
 					msg("ID: "+this.selectedItems[i].track.getID().toString());
 
 				}
 		    
-		    msg(this.selectedItems.toString());
-		
 		}
 	}
 	
 	this.getSelectedItems = function(shift_hold){
-	    
 
-	    msg("Selection Area: " + this.selectionArea().toString());
 		if(!shift_hold){
 			msg("Deselecting everybody!")
 			deselectAll();
@@ -147,28 +143,16 @@ function _yamoCanvas(view){
 
 	    var items = this.items;
     
-	    for(var i = 0; i < items.length; i++){
-			msg("i="+i.toString());
+		for(var i = 0; i < items.length; i++)
 			if(this.selectionArea().intersects(items[i].boundingRect())){
 				items[i].inverseSelection();
-				if(items[i].isSelected){
-					msg("Include this guy in selection!");
+				if(items[i].isSelected)
 					this.selectedItems.push(items[i]);
-				}
-				else{
-					msg("Remove this guy from selection!");
-					for(var j=0 ; j<this.selectedItems.length ; j++){
-						msg("j="+j.toString());
-						if(this.selectedItems[j] == items[i]){
-							msg("Equal!");
+				else
+					for(var j=0 ; j<this.selectedItems.length ; j++)
+						if(this.selectedItems[j] == items[i])
 							this.selectedItems.splice(j,1);
-						}
-					}
-				}
-				msg("After selection");
 			}
-	    } 
-	
 	}
 	
 	function deselectAll(){
