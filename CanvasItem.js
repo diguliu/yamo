@@ -69,7 +69,7 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 		this.Y = y;
 	}
 
-	this.inverseSelection = function(){
+	this.invertSelection = function(){
 		this.setSelected(!this.isSelected);
 	}
 
@@ -129,6 +129,8 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 	this.mousePressEvent = function(event){
 		
 		this.clickedMe = true;
+		
+//		parent.inverseSelect(this);
 		
 		msg("clicou na bola");
 		

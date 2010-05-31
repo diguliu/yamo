@@ -82,76 +82,59 @@ function _yamoCanvas(view){
 			
 	
 	this.mousePressEvent = function(event){
-		/*
-		msg("Mouse button pressed!");
-
-		if(event.modifiers() & Qt.ShiftModifier)
-			msg("Shift Hold!");
-		else
-			msg("No shift!");
 		
-*/
+		if(!(event.modifiers() & Qt.ShiftModifier))
+			deselectAll();
+
 		if(event.modifiers() & Qt.ControlModifier ){
-			
 			view.dragMode = QGraphicsView.ScrollHandDrag;
 		}
 		else{
-				
 			view.dragMode = QGraphicsView.RubberBandDrag;
 		}
 		
 		posA = QCursor.pos();
-	
-		
-		
-		
-		
+	}
+
+	this.printSelectedItems = function(){
+		msg("Selected items:");
+		if(this.selectedItems.length > 0)
+			for(var i = 0; i < this.selectedItems.length; i++)
+				msg("ID: "+this.selectedItems[i].track.getID().toString());
 	}
 	
 	this.mouseReleaseEvent = function(event){
-
 		if(event.modifiers() & Qt.ControlModifier ||event.modifiers() & Qt.ShiftModifier )
 			view.dragMode = QGraphicsView.NoDrag;
 		
 		posB = QCursor.pos();
 		
-		msg(posA.toString());
-		msg(posB.toString());
-		
 		if(posA.x() != posB.x() && posA.y() != posB.y()){
-		    
 			msg("Opening selection");
-
-			this.getSelectedItems(event.modifiers() & Qt.ShiftModifier);
-		
-			msg("Selected items:");
-		    if(this.selectedItems.length > 0)
-				for(var i = 0; i < this.selectedItems.length; i++){
-					msg("ID: "+this.selectedItems[i].track.getID().toString());
-
-				}
-		    
+			this.areaSelect();
+			this.printSelectedItems();
 		}
 	}
+
+	this.removeFromSelectedItems = function(item){
+		for(var j=0 ; j<this.selectedItems.length ; j++)
+			if(this.selectedItems[j] == item)
+				this.selectedItems.splice(j,1);
+	}
 	
-	this.getSelectedItems = function(shift_hold){
+	this.inverseSelect = function(item){
+		item.invertSelection();
+		if(item.isSelected)
+			this.selectedItems.push(item);
+		else
+			this.removeFromSelectedItems(item);
+	}
 
-		if(!shift_hold){
-			msg("Deselecting everybody!")
-			deselectAll();
-		}
-
+	this.areaSelect = function(){
 	    var items = this.items;
-    
 		for(var i = 0; i < items.length; i++)
 			if(this.selectionArea().intersects(items[i].boundingRect())){
-				items[i].inverseSelection();
-				if(items[i].isSelected)
-					this.selectedItems.push(items[i]);
-				else
-					for(var j=0 ; j<this.selectedItems.length ; j++)
-						if(this.selectedItems[j] == items[i])
-							this.selectedItems.splice(j,1);
+				this.inverseSelect(items[i]);
 			}
 	}
 	
